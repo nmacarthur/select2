@@ -24,7 +24,14 @@ define([
     var $rendered = decorated.call(this);
 
     this._transferTabIndex();
-    $rendered.append(this.$searchContainer);
+
+    console.log(this.options);
+    if(this.options.get('vivo')) {
+      $rendered.prepend(this.$searchContainer);
+
+    }else {
+      $rendered.append(this.$searchContainer);
+    }
 
     return $rendered;
   };
@@ -187,8 +194,9 @@ define([
   Search.prototype.update = function (decorated, data) {
     var searchHadFocus = this.$search[0] == document.activeElement;
 
-    this.$search.attr('placeholder', '');
-
+    if(!this.options.get('vivo')) {
+      this.$search.attr('placeholder', '');
+    }
     decorated.call(this, data);
 
     this.resizeSearch();
@@ -233,6 +241,7 @@ define([
 
     this.$search.css('width', width);
   };
+
 
   return Search;
 });

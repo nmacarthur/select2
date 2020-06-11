@@ -5,6 +5,18 @@ define([
   function AttachBody (decorated, $element, options) {
     this.$dropdownParent = $(options.get('dropdownParent') || document.body);
 
+    if(options.get('vivo')){
+      var selectorString = '[data-select2-id="' +
+        options.options.select2Id  +
+        '"]';
+      var $selectContainer = $(selectorString).closest('.select-container');
+
+      this.$dropdownParent = $(
+        $selectContainer.find('.dropdown-wrapper') || document.body
+      );
+    }
+
+
     decorated.call(this, $element, options);
   }
 

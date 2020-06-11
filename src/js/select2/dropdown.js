@@ -14,6 +14,7 @@ define([
   Dropdown.prototype.render = function () {
     var $dropdown = $(
       '<span class="select2-dropdown">' +
+        '<span class="select2-dropdown--selected"></span>' +
         '<span class="select2-results"></span>' +
       '</span>'
     );
@@ -31,7 +32,8 @@ define([
 
   Dropdown.prototype.position = function ($dropdown, $container) {
     // Should be implemented in subclasses
-  };
+
+    };
 
   Dropdown.prototype.destroy = function () {
     // Remove the dropdown from the DOM

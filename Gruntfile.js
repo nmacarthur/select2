@@ -80,13 +80,13 @@ module.exports = function (grunt) {
     },
 
     connect: {
-      tests: {
-        options: {
-          base: '.',
-          hostname: '127.0.0.1',
-          port: 9999
-        }
-      }
+      // tests: {
+      //   options: {
+      //     base: '.',
+      //     hostname: '127.0.0.1',
+      //     port: 9999
+      //   }
+      // }
     },
 
     uglify: {
@@ -109,7 +109,7 @@ module.exports = function (grunt) {
     qunit: {
       all: {
         options: {
-          urls: testUrls
+          // urls: testUrls
         }
       }
     },
@@ -122,9 +122,9 @@ module.exports = function (grunt) {
       code: {
         src: ['src/js/**/*.js']
       },
-      tests: {
-        src: ['tests/**/*.js']
-      }
+      // tests: {
+      //   src: ['tests/**/*.js']
+      // }
     },
 
     sass: {
@@ -212,11 +212,11 @@ module.exports = function (grunt) {
       js: {
         files: [
           'src/js/select2/**/*.js',
-          'tests/**/*.js'
+          // 'tests/**/*.js'
         ],
         tasks: [
           'compile',
-          'test',
+          // 'test',
           'minify'
         ]
       },
@@ -242,7 +242,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-sass');
 
-  grunt.registerTask('default', ['compile', 'test', 'lint', 'minify']);
+  grunt.registerTask('default', ['compile', 'lint', 'minify']);
 
   grunt.registerTask('compile', [
     'requirejs:dist', 'requirejs:dist.full', 'requirejs:i18n',
@@ -251,5 +251,4 @@ module.exports = function (grunt) {
   ]);
   grunt.registerTask('minify', ['uglify', 'sass:dist']);
   grunt.registerTask('lint', ['jshint']);
-  grunt.registerTask('test', ['connect:tests', 'qunit']);
 };

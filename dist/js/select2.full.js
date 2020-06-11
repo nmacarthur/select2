@@ -1562,7 +1562,7 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype.position = function ($selection, $container) {
     var $selectionContainer = $container.find('.selection');
-    $selectionContainer.append($selection);
+      $selectionContainer.append($selection);
   };
 
   BaseSelection.prototype.destroy = function () {
@@ -1793,11 +1793,11 @@ S2.define('select2/selection/multiple',[
   MultipleSelection.prototype.selectionContainer = function () {
     var $container = $(
       '<li class="select2-selection__choice">' +
-        '<button type="button" class="select2-selection__choice__remove" ' +
-        'tabindex="-1">' +
-          '<span aria-hidden="true">&times;</span>' +
-        '</button>' +
-        '<span class="select2-selection__choice__display"></span>' +
+      '<span class="select2-selection__choice__display"></span>' +
+      '<button type="button" class="select2-selection__choice__remove" ' +
+      'tabindex="-1">' +
+      '<span aria-hidden="true">&times;</span>' +
+      '</button>'+
       '</li>'
     );
 
@@ -2059,7 +2059,14 @@ S2.define('select2/selection/search',[
     var $rendered = decorated.call(this);
 
     this._transferTabIndex();
-    $rendered.append(this.$searchContainer);
+
+    console.log(this.options);
+    if(this.options.get('vivo')) {
+      $rendered.prepend(this.$searchContainer);
+
+    }else {
+      $rendered.append(this.$searchContainer);
+    }
 
     return $rendered;
   };
@@ -2222,8 +2229,9 @@ S2.define('select2/selection/search',[
   Search.prototype.update = function (decorated, data) {
     var searchHadFocus = this.$search[0] == document.activeElement;
 
-    this.$search.attr('placeholder', '');
-
+    if(!this.options.get('vivo')) {
+      this.$search.attr('placeholder', '');
+    }
     decorated.call(this, data);
 
     this.resizeSearch();
@@ -2268,6 +2276,7 @@ S2.define('select2/selection/search',[
 
     this.$search.css('width', width);
   };
+
 
   return Search;
 });
@@ -4143,6 +4152,7 @@ S2.define('select2/dropdown',[
   Dropdown.prototype.render = function () {
     var $dropdown = $(
       '<span class="select2-dropdown">' +
+        '<span class="select2-dropdown--selected"></span>' +
         '<span class="select2-results"></span>' +
       '</span>'
     );
@@ -4160,7 +4170,8 @@ S2.define('select2/dropdown',[
 
   Dropdown.prototype.position = function ($dropdown, $container) {
     // Should be implemented in subclasses
-  };
+
+    };
 
   Dropdown.prototype.destroy = function () {
     // Remove the dropdown from the DOM
@@ -4292,7 +4303,7 @@ S2.define('select2/dropdown/hidePlaceholder',[
 ], function () {
   function HidePlaceholder (decorated, $element, options, dataAdapter) {
     this.placeholder = this.normalizePlaceholder(options.get('placeholder'));
-
+    console.log(this);
     decorated.call(this, $element, options, dataAdapter);
   }
 
@@ -4429,6 +4440,18 @@ S2.define('select2/dropdown/attachBody',[
 ], function ($, Utils) {
   function AttachBody (decorated, $element, options) {
     this.$dropdownParent = $(options.get('dropdownParent') || document.body);
+
+    if(options.get('vivo')){
+      var selectorString = '[data-select2-id="' +
+        options.options.select2Id  +
+        '"]';
+      var $selectContainer = $(selectorString).closest('.select-container');
+
+      this.$dropdownParent = $(
+        $selectContainer.find('.dropdown-wrapper') || document.body
+      );
+    }
+
 
     decorated.call(this, $element, options);
   }
@@ -5199,7 +5222,8 @@ S2.define('select2/defaults',[
         return selection.text;
       },
       theme: 'default',
-      width: 'resolve'
+      width: 'resolve',
+      vivo: false
     };
   };
 
@@ -5495,11 +5519,14 @@ S2.define('select2/core',[
 
     this.selection.position(this.$selection, $container);
 
+    console.log(this.selection);
+ 
     var DropdownAdapter = this.options.get('dropdownAdapter');
     this.dropdown = new DropdownAdapter($element, this.options);
     this.$dropdown = this.dropdown.render();
 
     this.dropdown.position(this.$dropdown, $container);
+
 
     var ResultsAdapter = this.options.get('resultsAdapter');
     this.results = new ResultsAdapter($element, this.options, this.dataAdapter);

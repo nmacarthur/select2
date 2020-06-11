@@ -3,7 +3,7 @@ define([
 ], function () {
   function HidePlaceholder (decorated, $element, options, dataAdapter) {
     this.placeholder = this.normalizePlaceholder(options.get('placeholder'));
-
+    console.log(this);
     decorated.call(this, $element, options, dataAdapter);
   }
 

@@ -142,7 +142,7 @@ define([
 
   BaseSelection.prototype.position = function ($selection, $container) {
     var $selectionContainer = $container.find('.selection');
-    $selectionContainer.append($selection);
+      $selectionContainer.append($selection);
   };
 
   BaseSelection.prototype.destroy = function () {

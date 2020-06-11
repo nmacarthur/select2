@@ -40,11 +40,14 @@ define([
 
     this.selection.position(this.$selection, $container);
 
+    console.log(this.selection);
+ 
     var DropdownAdapter = this.options.get('dropdownAdapter');
     this.dropdown = new DropdownAdapter($element, this.options);
     this.$dropdown = this.dropdown.render();
 
     this.dropdown.position(this.$dropdown, $container);
+
 
     var ResultsAdapter = this.options.get('resultsAdapter');
     this.results = new ResultsAdapter($element, this.options, this.dataAdapter);
